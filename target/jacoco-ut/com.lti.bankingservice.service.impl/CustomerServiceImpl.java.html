@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bankingservice</a> &gt; <a href="index.source.html" class="el_package">com.lti.bankingservice.service.impl</a> &gt; <span class="el_source">CustomerServiceImpl.java</span></div><h1>CustomerServiceImpl.java</h1><pre class="source lang-java linenums">package com.lti.bankingservice.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.lti.bankingservice.services.CustomerService;
+import com.lti.bankingservice.dao.CustomerRepository;
+import com.lti.bankingservice.exception.ResourceNotFoundException;
+import com.lti.bankingservice.model.Customer;
+
+@Service
+<span class="nc" id="L14">public class CustomerServiceImpl implements CustomerService {</span>
+	
+	@Autowired
+	CustomerRepository customerRepository;
+	
+	public List&lt;Customer&gt; getAllCustomer() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L21">		List&lt;Customer&gt; customerList = new ArrayList&lt;Customer&gt;();</span>
+<span class="nc" id="L22">		customerRepository.findAll().forEach(customer -&gt; customerList.add(customer));</span>
+<span class="nc" id="L23">		return customerList;</span>
+	}
+
+	@Override
+	public Customer getCustomerByName(String name) {
+		// TODO Auto-generated method stub
+<span class="nc" id="L29">		return customerRepository.findByNameContains(name).get();		</span>
+	}
+
+	@Override
+	public void deleteCustomerById(Long customerId)  throws ResourceNotFoundException {
+<span class="nc" id="L34">		Customer customer = customerRepository.findById(customerId).orElseThrow(()-&gt;new ResourceNotFoundException(&quot;Customer Not Found With this Id&quot;));</span>
+<span class="nc" id="L35">		customerRepository.delete(customer);</span>
+		
+<span class="nc" id="L37">	}</span>
+
+	@Override
+	public Customer saveOrUpdate(Customer customer) {
+		// TODO Auto-generated method stub
+		
+<span class="nc" id="L43">		Customer newCustomer= new Customer();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">		if(customer.getCustomerId()!= null) {</span>
+<span class="nc" id="L45">			newCustomer.setCustomerId(customer.getCustomerId());</span>
+		}
+<span class="nc" id="L47">		newCustomer.setName(customer.getName());</span>
+<span class="nc" id="L48">		newCustomer.setMobile(customer.getEmail());</span>
+<span class="nc" id="L49">		newCustomer.setEmail(customer.getEmail());</span>
+<span class="nc" id="L50">		newCustomer.setAddress(customer.getAddress());</span>
+<span class="nc" id="L51">		newCustomer.setAccountType(customer.getAccountType());</span>
+<span class="nc" id="L52">		return customer;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
